@@ -27,19 +27,16 @@ ManejadorDeArchivos::ManejadorDeArchivos(){
 
 void ManejadorDeArchivos::escribir(String buffer[], int longitud){
     File file = SD.open("/data.csv", FILE_APPEND);
-    bool escrituraSatisfactioria = true;
+
     if(!file) {
         Serial.println("Fallo al abrir archivo para append");
         return;
     }
+
     for (int i = 0; i < longitud; i++){
-        if(!file.println(buffer[i])) {
-            escrituraSatisfactioria = false;
-        }    
+        file.println(buffer[i]);
     }
-    if(!escrituraSatisfactioria){
-        Serial.println("Hubo fallo en la escritura de alguna linea");
-    }
+
     Serial.println("Escritura satisfactoria");
     file.close();
 }
