@@ -43,3 +43,32 @@ void ManejadorDeArchivos::escribir(String buffer[], int longitud){
     Serial.println("Escritura satisfactoria");
     file.close();
 }
+
+void ManejadorDeArchivos::listarArchivos(){
+    File root = SD.open("/");
+    while(File entry = root.openNextFile()){
+        Serial.println(entry.name());
+        entry.close();
+    }
+    root.close();
+}
+
+void ManejadorDeArchivos::disponibilizarParaTransferencia(String nombreDestino){
+    File archivoOrigen = SD.open("/data.csv", FILE_READ);
+    String directorioDestino = "/listo/" + nombreDestino;
+    File archivoDestino = SD.open(directorioDestino, FILE_WRITE);
+
+    while (archivoOrigen.available()){
+        archivoDestino.println(archivoOrigen.readStringUntil('\n'));
+    }
+
+    archivoDestino.close();
+    archivoOrigen.close();
+    this->reiniciarArchivoDeDatos();
+}
+
+void ManejadorDeArchivos::reiniciarArchivoDeDatos(){
+    SD.remove("/data.csv");
+    File archivo = SD.open("/data.csv", FILE_READ);
+    archivo.close();
+}

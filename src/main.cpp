@@ -14,4 +14,7 @@ void setup(){
     manejador->escribir(buffer, longitudBuffer);
 }
 
-void loop(){}
+void loop(){
+    manejador->listarArchivos();
+    delay(2000);
+}
