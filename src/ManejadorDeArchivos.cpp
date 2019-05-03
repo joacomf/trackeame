@@ -3,8 +3,8 @@
 #include "SD.h"
 #include <SPI.h>
 
-// Define CS pin for the SD card module
 #define SD_CS 5
+#define BYTES_POR_ARCHIVO 21000
 
 ManejadorDeArchivos::ManejadorDeArchivos(){
     bool tarjetaInicializada = SD.begin(SD_CS);  
@@ -22,6 +22,7 @@ ManejadorDeArchivos::ManejadorDeArchivos(){
         File file = SD.open("/data.csv", FILE_WRITE);
         file.close();
     }
+    SD.mkdir("/listo");
     
 }
 
@@ -34,7 +35,13 @@ void ManejadorDeArchivos::escribir(String buffer[], int longitud){
     }
 
     for (int i = 0; i < longitud; i++){
-        file.println(buffer[i]);
+        if(file.size() < BYTES_POR_ARCHIVO){
+            file.println(buffer[i]);
+        } else {
+            file.close();
+            this->disponibilizarParaTransferencia(String(millis()));
+            file = SD.open("/data.csv", FILE_APPEND);
+        }
     }
 
     Serial.println("Escritura satisfactoria");
@@ -52,7 +59,7 @@ void ManejadorDeArchivos::listarArchivos(){
 
 void ManejadorDeArchivos::disponibilizarParaTransferencia(String nombreDestino){
     File archivoOrigen = SD.open("/data.csv", FILE_READ);
-    String directorioDestino = "/listo/" + nombreDestino;
+    String directorioDestino = String("/listo/") + nombreDestino + String(".csv");
     File archivoDestino = SD.open(directorioDestino, FILE_WRITE);
 
     while (archivoOrigen.available()){
@@ -66,6 +73,6 @@ void ManejadorDeArchivos::disponibilizarParaTransferencia(String nombreDestino){
 
 void ManejadorDeArchivos::reiniciarArchivoDeDatos(){
     SD.remove("/data.csv");
-    File archivo = SD.open("/data.csv", FILE_READ);
+    File archivo = SD.open("/data.csv", FILE_WRITE);
     archivo.close();
 }

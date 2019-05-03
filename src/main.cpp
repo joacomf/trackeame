@@ -7,14 +7,19 @@ ManejadorDeArchivos* manejador;
 
 void setup(){
     Serial.begin(115200);
-    String buffer[] = {"Linea;1;datos", "Linea;2;datos", "Linea;3;datos"};
-    int longitudBuffer = sizeof(buffer)/sizeof(String);
-    Serial.println(longitudBuffer);
+
     manejador = new ManejadorDeArchivos();
-    manejador->escribir(buffer, longitudBuffer);
 }
 
 void loop(){
-    manejador->listarArchivos();
-    delay(2000);
+    String buffer[5];
+
+    for(int i=0;i<5;i++){
+        buffer[i] = millis();
+    }
+
+    int longitudBuffer = sizeof(buffer)/sizeof(String);
+    manejador->escribir(buffer, longitudBuffer);
+
+    delay(200);
 }
