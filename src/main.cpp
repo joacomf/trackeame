@@ -2,24 +2,18 @@
 #include "SD.h"
 #include <SPI.h>
 #include "ManejadorDeArchivos.hpp"
+#include "GestorDeEnvios.hpp"
 
 ManejadorDeArchivos* manejador;
+GestorDeEnvios* gestor;
 
 void setup(){
     Serial.begin(115200);
-
     manejador = new ManejadorDeArchivos();
+    gestor = new GestorDeEnvios();
 }
 
 void loop(){
-    String buffer[5];
-
-    for(int i=0;i<5;i++){
-        buffer[i] = millis();
-    }
-
-    int longitudBuffer = sizeof(buffer)/sizeof(String);
-    manejador->escribir(buffer, longitudBuffer);
-
-    delay(200);
+    gestor -> enviar("esto es una prueba de envio");
+    delay(2000);
 }
