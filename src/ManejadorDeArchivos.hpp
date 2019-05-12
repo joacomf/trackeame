@@ -7,6 +7,7 @@ class ManejadorDeArchivos{
         void escribir(String buffer[], int longitudBuffer);
         void listarArchivos();
         void disponibilizarParaTransferencia(String nombreDestino);
+        String obtenerContenido(String nombreArchivo);
     private:
         void reiniciarArchivoDeDatos();
 };

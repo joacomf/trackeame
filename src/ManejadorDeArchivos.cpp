@@ -71,6 +71,17 @@ void ManejadorDeArchivos::disponibilizarParaTransferencia(String nombreDestino){
     this->reiniciarArchivoDeDatos();
 }
 
+String ManejadorDeArchivos::obtenerContenido(String nombreArchivo){
+    String contenido = "";
+    String linea = "";
+    File archivoOrigen = SD.open(nombreArchivo, FILE_READ);
+    while (archivoOrigen.available()){
+        linea = archivoOrigen.readStringUntil('\n');
+        contenido = contenido + linea;
+    }
+    return contenido;
+}
+
 void ManejadorDeArchivos::reiniciarArchivoDeDatos(){
     SD.remove("/data.csv");
     File archivo = SD.open("/data.csv", FILE_WRITE);

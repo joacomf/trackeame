@@ -14,6 +14,9 @@ void setup(){
 }
 
 void loop(){
-    gestor -> enviar("esto es una prueba de envio");
-    delay(2000);
+    String buffer[] = {"hola", "prueba", "prueba2"};
+    manejador->escribir(buffer, 3);
+    String contenido = manejador->obtenerContenido("/data.csv");
+    gestor->enviar("contenido: {" + contenido + "}");
+    delay(5000);
 }
