@@ -17,6 +17,6 @@ void loop(){
     String buffer[] = {"hola", "prueba", "prueba2"};
     manejador->escribir(buffer, 3);
     String contenido = manejador->obtenerContenido("/data.csv");
-    gestor->enviar("contenido: {" + contenido + "}");
+    gestor->enviar(contenido);
     delay(5000);
 }
