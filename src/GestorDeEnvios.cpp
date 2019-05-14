@@ -2,6 +2,7 @@
 #include "GestorDeEnvios.hpp"
 #include <HTTPClient.h>
 #include <WiFi.h>
+#include <ArduinoJson.h>
 
 GestorDeEnvios::GestorDeEnvios(){
     WiFi.begin("Fibertel WiFi190 2.4GHz", "telecomunicaciones96"); 
@@ -13,12 +14,15 @@ GestorDeEnvios::GestorDeEnvios(){
 }
 
 void GestorDeEnvios::enviar(String contenidoArchivo){
+    DynamicJsonDocument doc(25000);
     if(WiFi.status() == WL_CONNECTED){
-        //this->cliente.begin("http://jsonplaceholder.typicode.com/posts");
         this->cliente.begin("http://192.168.0.186:5000/api/locations");
         this->cliente.addHeader("Content-Type", "application/json");
-        String cuerpo = "\"" + String("hola") + "\"";
-        int codigoHTTPRespuesta = this->cliente.POST("{\"content\":" + cuerpo + "}" );
+        String cuerpo = "\"" + contenidoArchivo  + "\"";
+        doc["content"] = contenidoArchivo;
+        String envio;
+        serializeJson(doc, envio);
+        int codigoHTTPRespuesta = this->cliente.POST(envio);
         if(codigoHTTPRespuesta > 0){
             String respuesta = this->cliente.getString();
             Serial.println(respuesta);

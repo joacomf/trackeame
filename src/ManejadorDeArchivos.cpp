@@ -73,11 +73,9 @@ void ManejadorDeArchivos::disponibilizarParaTransferencia(String nombreDestino){
 
 String ManejadorDeArchivos::obtenerContenido(String nombreArchivo){
     String contenido = "";
-    String linea = "";
     File archivoOrigen = SD.open(nombreArchivo, FILE_READ);
     while (archivoOrigen.available()){
-        linea = archivoOrigen.readStringUntil('\n');
-        contenido = contenido + linea;
+        contenido += archivoOrigen.readStringUntil('\n') + '\n';
     }
     return contenido;
 }
