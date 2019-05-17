@@ -19,7 +19,8 @@ void GestorDeEnvios::enviar(String contenidoArchivo){
         this->cliente.begin("http://192.168.0.186:5000/api/locations");
         this->cliente.addHeader("Content-Type", "application/json");
         String cuerpo = "\"" + contenidoArchivo  + "\"";
-        doc["content"] = contenidoArchivo;
+        doc["posiciones"] = contenidoArchivo;
+        doc["usuario"] = "untref";
         String envio;
         serializeJson(doc, envio);
         int codigoHTTPRespuesta = this->cliente.POST(envio);
