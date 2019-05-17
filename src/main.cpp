@@ -1,9 +1,23 @@
 #include <Arduino.h>
+#include "ManejadorDeArchivos.hpp"
+#include "GestorDeEnvios.hpp"
+#include "Posicionador.hpp"
 
-void setup() {
-  // put your setup code here, to run once:
+ManejadorDeArchivos* manejador;
+GestorDeEnvios* gestor;
+Posicionador* posicionador;
+
+void setup(){
+    Serial.begin(115200);
+    manejador = new ManejadorDeArchivos();
+    gestor = new GestorDeEnvios();
+    posicionador = new Posicionador();
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop(){
+    vector <string> posiciones = posicionador->obtenerPaqueteDePosiciones();
+    manejador->escribir(posiciones);
+
+    String contenido = manejador->obtenerContenido("/data.csv");
+    gestor->enviar(contenido);
 }
