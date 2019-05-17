@@ -26,7 +26,7 @@ ManejadorDeArchivos::ManejadorDeArchivos(){
     
 }
 
-void ManejadorDeArchivos::escribir(String buffer[], int longitud){
+void ManejadorDeArchivos::escribir(vector<string> posiciones){
     File file = SD.open("/data.csv", FILE_APPEND);
 
     if(!file) {
@@ -34,10 +34,12 @@ void ManejadorDeArchivos::escribir(String buffer[], int longitud){
         return;
     }
 
-    for (int i = 0; i < longitud; i++){
+    vector<string>::iterator iterador;
+    for (iterador = posiciones.begin(); iterador != posiciones.end(); ++iterador){
         if(file.size() < BYTES_POR_ARCHIVO){
-            file.println(buffer[i]);
-        } else {
+            string posicion = *iterador;
+            file.println(posicion.c_str());
+        }else{
             file.close();
             this->disponibilizarParaTransferencia(String(millis()));
             file = SD.open("/data.csv", FILE_APPEND);
