@@ -7,7 +7,7 @@ using namespace std;
 class ManejadorDeArchivos{
     public:
         ManejadorDeArchivos();
-        void escribir(vector<string> posiciones);
+        bool escribir(vector<string> posiciones);
         void listarArchivos();
         void disponibilizarParaTransferencia(String nombreDestino);
         String obtenerContenido(String nombreArchivo);

@@ -9,12 +9,12 @@
 ManejadorDeArchivos::ManejadorDeArchivos(){
     bool tarjetaInicializada = SD.begin(SD_CS);  
     if(!tarjetaInicializada) {
-        Serial.println("Card Mount Failed");
+        Serial.println("Falló el montado de la tarjeta SD");
         return;
     }
     uint8_t cardType = SD.cardType();
     if(cardType == CARD_NONE) {
-        Serial.println("No SD card attached");
+        Serial.println("No hay tarjeta SD");
         return;
     }
     //Crea el archivo de almacenamiento de posiciones (si no existe)
@@ -23,15 +23,16 @@ ManejadorDeArchivos::ManejadorDeArchivos(){
         file.close();
     }
     SD.mkdir("/listo");
-    
 }
 
-void ManejadorDeArchivos::escribir(vector<string> posiciones){
+bool ManejadorDeArchivos::escribir(vector<string> posiciones){
     File file = SD.open("/data.csv", FILE_APPEND);
+
+    bool archivoLleno = false;
 
     if(!file) {
         Serial.println("Fallo al abrir archivo para append");
-        return;
+        return false;
     }
 
     vector<string>::iterator iterador;
@@ -43,11 +44,15 @@ void ManejadorDeArchivos::escribir(vector<string> posiciones){
             file.close();
             this->disponibilizarParaTransferencia(String(millis()));
             file = SD.open("/data.csv", FILE_APPEND);
+
+            archivoLleno = true;
         }
     }
 
     Serial.println("Escritura satisfactoria");
     file.close();
+
+    return archivoLleno;
 }
 
 void ManejadorDeArchivos::listarArchivos(){
