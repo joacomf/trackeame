@@ -5,7 +5,7 @@
 #include <ArduinoJson.h>
 
 GestorDeEnvios::GestorDeEnvios(){
-    WiFi.begin("Fibertel WiFi190 2.4GHz", "telecomunicaciones96"); 
+    WiFi.begin("Maquinola", "12345678"); 
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
         Serial.println("Conectando");
@@ -14,9 +14,9 @@ GestorDeEnvios::GestorDeEnvios(){
 }
 
 void GestorDeEnvios::enviar(String contenidoArchivo){
-    DynamicJsonDocument doc(25000);
+    DynamicJsonDocument doc(12000);
     if(WiFi.status() == WL_CONNECTED){
-        this->cliente.begin("http://192.168.0.186:5000/api/locations");
+        this->cliente.begin("http://192.168.43.173:5000/api/locations");
         this->cliente.addHeader("Content-Type", "application/json");
         String cuerpo = "\"" + contenidoArchivo  + "\"";
         doc["posiciones"] = contenidoArchivo;

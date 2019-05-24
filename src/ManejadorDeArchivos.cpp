@@ -4,7 +4,7 @@
 #include <SPI.h>
 
 #define SD_CS 5
-#define BYTES_POR_ARCHIVO 21000
+#define BYTES_POR_ARCHIVO 12000
 
 ManejadorDeArchivos::ManejadorDeArchivos(){
     bool tarjetaInicializada = SD.begin(SD_CS);  
