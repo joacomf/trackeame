@@ -5,7 +5,7 @@
 #include <ArduinoJson.h>
 
 GestorDeEnvios::GestorDeEnvios(){
-    WiFi.begin("Fibertel WiFi190 2.4GHz", "telecomunicaciones96"); 
+    WiFi.begin("Yoda", "gonzalono"); 
     while (WiFi.status() != WL_CONNECTED) {
         delay(1000);
         Serial.println("Conectando");

@@ -4,7 +4,7 @@
 #include <SPI.h>
 
 #define SD_CS 5
-#define BYTES_POR_ARCHIVO 21000
+#define BYTES_POR_ARCHIVO 10000
 
 ManejadorDeArchivos::ManejadorDeArchivos(){
     bool tarjetaInicializada = SD.begin(SD_CS);  
@@ -25,14 +25,12 @@ ManejadorDeArchivos::ManejadorDeArchivos(){
     SD.mkdir("/listo");
 }
 
-bool ManejadorDeArchivos::escribir(vector<string> posiciones){
+void ManejadorDeArchivos::escribir(vector<string> posiciones){
     File file = SD.open("/data.csv", FILE_APPEND);
-
-    bool archivoLleno = false;
 
     if(!file) {
         Serial.println("Fallo al abrir archivo para append");
-        return false;
+        return;
     }
 
     vector<string>::iterator iterador;
@@ -45,23 +43,23 @@ bool ManejadorDeArchivos::escribir(vector<string> posiciones){
             this->disponibilizarParaTransferencia(String(millis()));
             file = SD.open("/data.csv", FILE_APPEND);
 
-            archivoLleno = true;
         }
     }
 
     Serial.println("Escritura satisfactoria");
     file.close();
-
-    return archivoLleno;
 }
 
-void ManejadorDeArchivos::listarArchivos(){
-    File root = SD.open("/");
-    while(File entry = root.openNextFile()){
-        Serial.println(entry.name());
+string ManejadorDeArchivos::obtenerProximoArchivoParaEnviar(){
+    File root = SD.open("/listo");
+
+    string proximoArchivoAEnviar = "";
+    if(File entry = root.openNextFile()){
+        proximoArchivoAEnviar = entry.name();
         entry.close();
     }
-    root.close();
+
+    return proximoArchivoAEnviar;
 }
 
 void ManejadorDeArchivos::disponibilizarParaTransferencia(String nombreDestino){

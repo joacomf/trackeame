@@ -16,8 +16,15 @@ void setup(){
 
 void loop(){
     vector <string> posiciones = posicionador->obtenerPaqueteDePosiciones();
+
     manejador->escribir(posiciones);
 
-    String contenido = manejador->obtenerContenido("/data.csv");
-    gestor->enviar(contenido);
+    string proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
+    while (proximoArchivoParaEnviar != "") {
+        String contenido = manejador->obtenerContenido(proximoArchivoParaEnviar.c_str());
+        gestor->enviar(contenido);
+
+        proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
+    }
+
 }
