@@ -20,9 +20,13 @@ void loop(){
     manejador->escribir(posiciones);
 
     string proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
-    while (proximoArchivoParaEnviar != "") {
+    while (gestor->estaConectado() && proximoArchivoParaEnviar != "") {
         String contenido = manejador->obtenerContenido(proximoArchivoParaEnviar.c_str());
-        gestor->enviar(contenido);
+
+        bool seEnvioElArchivoCorrectamente = gestor->enviar(contenido);
+        if(seEnvioElArchivoCorrectamente) {
+            manejador->eliminar(proximoArchivoParaEnviar);
+        }
 
         proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
     }
