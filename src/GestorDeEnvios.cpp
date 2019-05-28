@@ -46,7 +46,7 @@ bool GestorDeEnvios::conectar(){
     bool estaConectado = WiFi.status() == WL_CONNECTED;
     int numeroDeIntentos = 0;
 
-    while (!estaConectado && numeroDeIntentos < 10) {
+    while (!estaConectado && numeroDeIntentos < CANTIDAD_DE_INTENTOS_MAXIMA) {
         delay(1000);
         Serial.println("Conectando");
 
