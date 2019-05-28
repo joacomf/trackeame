@@ -24,13 +24,14 @@ bool GestorDeEnvios::enviar(String contenidoArchivo){
         doc["usuario"] = "untref";
         String envio;
         serializeJson(doc, envio);
+
         int codigoHTTPRespuesta = this->cliente.POST(envio);
-        if(codigoHTTPRespuesta > 0){
+        pudoEnviar = codigoHTTPRespuesta == 200;
+
+        if(!pudoEnviar){
             String respuesta = this->cliente.getString();
-            pudoEnviar = true;
-            Serial.println(respuesta);
-        } else {
             Serial.println(String("Error al enviar"));
+            Serial.println(respuesta);
             Serial.println(codigoHTTPRespuesta);
         }
     } else {
