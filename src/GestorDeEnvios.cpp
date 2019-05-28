@@ -5,12 +5,7 @@
 #include <ArduinoJson.h>
 
 GestorDeEnvios::GestorDeEnvios(){
-    WiFi.begin("Fibertel WiFi190 2.4GHz", "telecomunicaciones96");
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Conectando");
-    }
-    Serial.println("Conectado");
+    this->conectar();
 }
 
 bool GestorDeEnvios::enviar(String contenidoArchivo){
@@ -43,4 +38,21 @@ bool GestorDeEnvios::enviar(String contenidoArchivo){
 
 bool GestorDeEnvios::estaConectado(){
     return WiFi.status() == WL_CONNECTED;
+}
+
+bool GestorDeEnvios::conectar(){
+    WiFi.begin("Fibertel WiFi190 2.4GHz", "telecomunicaciones96");
+
+    bool estaConectado = WiFi.status() == WL_CONNECTED;
+
+    while (!estaConectado) {
+        delay(1000);
+        Serial.println("Conectando");
+
+        estaConectado = WiFi.status() == WL_CONNECTED;
+    }
+
+    Serial.println("Conectado");
+
+    return estaConectado;
 }

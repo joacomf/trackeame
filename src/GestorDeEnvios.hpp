@@ -7,6 +7,7 @@ class GestorDeEnvios{
         GestorDeEnvios();
         bool enviar(String contenidoArchivo);
         bool estaConectado();
+        bool conectar();
     private:
         HTTPClient cliente;
 };
