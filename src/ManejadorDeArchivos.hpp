@@ -11,6 +11,7 @@ class ManejadorDeArchivos{
         void disponibilizarParaTransferencia(String nombreDestino);
         String obtenerContenido(String nombreArchivo);
         string obtenerProximoArchivoParaEnviar();
+        void eliminar(string nombreArchivo);
     private:
         void reiniciarArchivoDeDatos();
 };

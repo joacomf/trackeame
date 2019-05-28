@@ -85,6 +85,10 @@ String ManejadorDeArchivos::obtenerContenido(String nombreArchivo){
     return contenido;
 }
 
+void ManejadorDeArchivos::eliminar(string nombreArchivo){
+    SD.remove(nombreArchivo.c_str());
+}
+
 void ManejadorDeArchivos::reiniciarArchivoDeDatos(){
     SD.remove("/data.csv");
     File archivo = SD.open("/data.csv", FILE_WRITE);
