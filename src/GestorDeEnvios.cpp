@@ -10,8 +10,14 @@ GestorDeEnvios::GestorDeEnvios(){
 
 bool GestorDeEnvios::enviar(String contenidoArchivo){
     bool pudoEnviar = false;
-    DynamicJsonDocument doc(25000);
-    if(WiFi.status() == WL_CONNECTED){
+
+    if(!this->estaConectado()){
+        this->conectar();
+    }
+
+    if(this->estaConectado()){
+        DynamicJsonDocument doc(25000);
+
         this->cliente.begin("http://192.168.0.186:5000/api/locations");
         this->cliente.addHeader("Content-Type", "application/json");
         String cuerpo = "\"" + contenidoArchivo  + "\"";
@@ -29,8 +35,6 @@ bool GestorDeEnvios::enviar(String contenidoArchivo){
             Serial.println(respuesta);
             Serial.println(codigoHTTPRespuesta);
         }
-    } else {
-        Serial.print("No se pudo realizar el envio");
     }
 
     return pudoEnviar;
