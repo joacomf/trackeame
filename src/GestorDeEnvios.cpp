@@ -44,12 +44,14 @@ bool GestorDeEnvios::conectar(){
     WiFi.begin("Fibertel WiFi190 2.4GHz", "telecomunicaciones96");
 
     bool estaConectado = WiFi.status() == WL_CONNECTED;
+    int numeroDeIntentos = 0;
 
-    while (!estaConectado) {
+    while (!estaConectado && numeroDeIntentos < 10) {
         delay(1000);
         Serial.println("Conectando");
 
         estaConectado = WiFi.status() == WL_CONNECTED;
+        numeroDeIntentos++;
     }
 
     Serial.println("Conectado");
