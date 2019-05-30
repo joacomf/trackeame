@@ -11,7 +11,7 @@ vector<string> Posicionador::obtenerPaqueteDePosiciones(){
     vector <string> buffer;
 
     Serial.println("Inicio carga");
-    while (Serial2.available() || buffer.size() < 10){
+    while (Serial2.available() && buffer.size() < 10){
         string localizacion = Serial2.readStringUntil('\n').c_str();
         if (localizacion.substr(0,6) == "$GPRMC"){
             Serial.println(localizacion.c_str());
