@@ -4,14 +4,7 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 
-GestorDeEnvios::GestorDeEnvios(){
-    WiFi.begin("Maquinola", "12345678"); 
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Conectando");
-    }
-    Serial.println("Conectado");
-}
+GestorDeEnvios::GestorDeEnvios() {}
 
 void GestorDeEnvios::enviar(String contenidoArchivo){
     DynamicJsonDocument doc(12000);
