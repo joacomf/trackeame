@@ -1,6 +1,7 @@
 #ifndef GESTORDECREDENCIALES_H
 #define GESTORDECREDENCIALES_H
 
+#include "Credencial.hpp"
 #include <BluetoothSerial.h>
 
 using namespace std;
@@ -8,13 +9,10 @@ using namespace std;
 class GestorDeCredenciales {
     public:
         GestorDeCredenciales();
-        void obtenerCredenciales();
-        void conectar();
+        vector<Credencial*> obtenerCredenciales();
     private:
         BluetoothSerial bluetoothSerial;
-        vector<string> ssids;
-        vector<string> passwords;
-        vector<string> convertirDeCsvACredenciales(string csv);
+        vector<string> separarCsvDeCredenciales(string csv);
 };
 
 #endif

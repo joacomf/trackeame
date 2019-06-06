@@ -2,11 +2,14 @@
 //#include "ManejadorDeArchivos.hpp"
 //#include "GestorDeEnvios.hpp"
 #include "GestorDeCredenciales.hpp"
+#include "GestorDeConexiones.hpp"
 //#include "Posicionador.hpp"
 
 //ManejadorDeArchivos* manejador;
 //GestorDeEnvios* gestorDeEnvios;
 GestorDeCredenciales* gestorDeCredenciales;
+GestorDeConexiones* gestorDeConexiones;
+vector<Credencial*> credenciales;
 //Posicionador* posicionador;
 
 void setup(){
@@ -14,12 +17,13 @@ void setup(){
     //manejador = new ManejadorDeArchivos();
     //gestorDeEnvios = new GestorDeEnvios();
     gestorDeCredenciales = new GestorDeCredenciales();
-    gestorDeCredenciales->obtenerCredenciales();
+    gestorDeConexiones = new GestorDeConexiones();
+    credenciales = gestorDeCredenciales->obtenerCredenciales();
     //posicionador = new Posicionador();
 }
 
 void loop(){
-    gestorDeCredenciales->conectar();
+    //gestorDeConexiones->conectar(credenciales);
     /*vector <string> posiciones = posicionador->obtenerPaqueteDePosiciones();
     manejador->escribir(posiciones);
 
