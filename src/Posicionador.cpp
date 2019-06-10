@@ -13,15 +13,68 @@ vector<string> Posicionador::obtenerPaqueteDePosiciones(){
     vector <string> buffer;
 
     Serial.println("Inicio carga");
+
+    while(!Serial2.available()); //Espero a que este disponible (ver si asignar timeout)
+    Serial.println("Serial disponible");
+    string localizacion = this -> obtenerProximaPosicionValida();
+    string latitud = this->obtenerDatoEnPosicion(localizacion, 3);
+    string longitud = this->obtenerDatoEnPosicion(localizacion, 5);
+
+    double latitudEnGrados = this->transformarPosicionAGrados(atof(latitud.c_str()));
+    double longitudEnGrados = this->transformarPosicionAGrados(atof(longitud.c_str()));
+    buffer.push_back(localizacion);
+
     while (Serial2.available() && buffer.size() < 10){
-        string localizacion = Serial2.readStringUntil('\n').c_str();
-        if (localizacion.substr(0,6) == "$GPRMC"){
-            Serial.println(localizacion.c_str());
-            buffer.push_back(localizacion);
+
+        string localizacionSiguiente = this -> obtenerProximaPosicionValida();
+        string latitudSiguiente = this->obtenerDatoEnPosicion(localizacionSiguiente, 3);
+        string longitudSiguiente = this->obtenerDatoEnPosicion(localizacionSiguiente, 5);
+        double latitudSiguienteEnGrados = this->transformarPosicionAGrados(atof(latitudSiguiente.c_str()));
+        double longitudSiguienteEnGrados = this->transformarPosicionAGrados(atof(longitudSiguiente.c_str()));
+
+        double distancia = this->distanciaEnMetrosEntre(latitudEnGrados, longitudEnGrados, latitudSiguienteEnGrados, longitudSiguienteEnGrados);
+        Serial.println(distancia);
+        if (distancia > 3) {
+            buffer.push_back(localizacionSiguiente);
         }
+
+        latitudEnGrados = latitudSiguienteEnGrados;
+        longitudEnGrados = longitudSiguienteEnGrados;
+
     }
 
     return buffer;
+}
+
+string Posicionador::obtenerDatoEnPosicion(string localizacion, int posicion){
+    char *token = std::strtok((char*) localizacion.c_str(), ",");
+    for (int i = 0; i < posicion && token != NULL; i++){
+        token = std::strtok(NULL, ",");
+    }
+
+    return token;
+}
+
+string Posicionador::obtenerProximaPosicionValida(){
+    bool posicionValida = false;
+    string localizacion;
+    Serial.println("Esperando posicion valida");
+    while(!posicionValida) {
+
+        localizacion = Serial2.readStringUntil('\n').c_str();
+
+        while(localizacion.substr(0, 6).compare("$GPRMC") != 0){
+            localizacion = Serial2.readStringUntil('\n').c_str();
+        }
+
+        int indice = localizacion.find_first_of("V");
+        if(indice >= localizacion.length() && indice < 0){
+            posicionValida = true;
+            Serial.println(localizacion.c_str());
+        }
+    }
+
+    return localizacion;
 }
 
 double Posicionador::distanciaEnMetrosEntre(double latitud_1, double longitud_1, double latitud_2, double longitud_2){

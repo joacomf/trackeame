@@ -16,19 +16,5 @@ void setup(){
 
 void loop(){
     vector <string> posiciones = posicionador->obtenerPaqueteDePosiciones();
-
-    manejador->escribir(posiciones);
-
-    string proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
-    while (gestor->estaConectado() && proximoArchivoParaEnviar != "") {
-        String contenido = manejador->obtenerContenido(proximoArchivoParaEnviar.c_str());
-
-        bool seEnvioElArchivoCorrectamente = gestor->enviar(contenido);
-        if(seEnvioElArchivoCorrectamente) {
-            manejador->eliminar(proximoArchivoParaEnviar);
-        }
-
-        proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
-    }
-
+    delay(1000);
 }
