@@ -7,41 +7,43 @@ GestorDeConexiones::GestorDeConexiones(vector<Credencial*> credenciales) {
     this->credenciales = credenciales;
 }
 
-void GestorDeConexiones::conectar() {
-    buscarRedesYConectar();
+void GestorDeConexiones::buscarRedesYConectar() {
     Serial.print("Cantidad de credenciales:");
     Serial.println(credenciales.size());
-}
 
-void GestorDeConexiones::buscarRedesYConectar() {
     vector<string> redesDisponibles = obtenerRedesDisponibles();
 
-    intentarConectarARedesDisponibles(redesDisponibles);
+    intentarConectarConCredencialesGuardadas(redesDisponibles);
 }
 
-void GestorDeConexiones::intentarConectarARedesDisponibles(vector<string> redesDisponibles){
+void GestorDeConexiones::intentarConectarConCredencialesGuardadas(vector<string> redesDisponibles){
     int i = 0;
-    int cantidadDeRedesDisponibles = redesDisponibles.size();
 
-    while (i++ < credenciales.size() && !estaConectado()) {
+    while (i < credenciales.size() && !estaConectado()) {
         Credencial* credencial = credenciales[i];
-        string redGuardada = credencial->ssid();
-        string password = credencial->password();
-        Serial.print("Red guardada de credencial:");
-        Serial.println(redGuardada.c_str());
-        Serial.print("Password de credencial:");
-        Serial.println(password.c_str());
-        int j = 0;
+        intentarConectarConRedesDisponibles(redesDisponibles, credencial);
+        i++;
+    }
+}
 
-        while (j++ < cantidadDeRedesDisponibles && !estaConectado()) {
-            string redSeleccionada = redesDisponibles[j];
+void GestorDeConexiones::intentarConectarConRedesDisponibles(vector<string> redesDisponibles, Credencial* credencial) {
+    int cantidadDeRedesDisponibles = redesDisponibles.size();
+    string redGuardada = credencial->ssid();
+    string password = credencial->password();
 
-            if (redGuardada == redSeleccionada) {
-                conectarConRed(redGuardada, password);
-            }
+    Serial.print("Red guardada de credencial:");
+    Serial.println(redGuardada.c_str());
+    Serial.print("Password de credencial:");
+    Serial.println(password.c_str());
 
+    int j = 0;
+    while (j < cantidadDeRedesDisponibles && !estaConectado()) {
+        string redSeleccionada = redesDisponibles[j];
+
+        if (redGuardada == redSeleccionada) {
+            conectarConRed(redGuardada, password);
         }
-
+        j++;
     }
 }
 

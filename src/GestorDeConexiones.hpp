@@ -8,16 +8,16 @@ using namespace std;
 class GestorDeConexiones {
     public:
         GestorDeConexiones(vector<Credencial*> credenciales);
-        void conectar();
+        void buscarRedesYConectar();
         bool estaConectado();
     private:
         const int CANTIDAD_DE_INTENTOS_MAXIMA = 10;
         vector<Credencial*> credenciales;
-        void buscarRedesYConectar();
         int obtenerCantidadDeRedesDisponibles();
         vector<string> obtenerRedesDisponibles();
-        void intentarConectarARedesDisponibles(vector<string> redesDisponibles);
+        void intentarConectarConCredencialesGuardadas(vector<string> redesDisponibles);
         void conectarConRed(string redGuardada, string password);
+        void intentarConectarConRedesDisponibles(vector<string> redesDisponibles, Credencial* credencial);
 };
 
 #endif
