@@ -17,6 +17,7 @@ class GestorDeConexiones {
         int obtenerCantidadDeRedesDisponibles();
         vector<string> obtenerRedesDisponibles();
         void intentarConectarARedesDisponibles(vector<string> redesDisponibles);
+        void conectarConRed(string redGuardada, string password);
 };
 
 #endif

@@ -37,29 +37,33 @@ void GestorDeConexiones::intentarConectarARedesDisponibles(vector<string> redesD
             string redSeleccionada = redesDisponibles[j];
 
             if (redGuardada == redSeleccionada) {
-                int cantidadDeIntentos = 0;
-                WiFi.begin(redGuardada.c_str(), password.c_str());
-
-                while (!estaConectado() &&
-                    cantidadDeIntentos++ <= CANTIDAD_DE_INTENTOS_MAXIMA) {
-
-                    Serial.print("Conectando a ");
-                    Serial.println(redGuardada.c_str());
-                    delay(1000);
-                }
-
-                if (estaConectado()) {
-                    Serial.print("Conectado a ");
-                    Serial.println(redGuardada.c_str());
-                } else {
-                    Serial.println("No se pudo conectar.");
-                }
+                conectarConRed(redGuardada, password);
             }
 
             j++;
         }
 
         i++;
+    }
+}
+
+void GestorDeConexiones::conectarConRed(string redGuardada, string password) {
+    int cantidadDeIntentos = 0;
+    WiFi.begin(redGuardada.c_str(), password.c_str());
+
+    while (!estaConectado() &&
+        cantidadDeIntentos++ <= CANTIDAD_DE_INTENTOS_MAXIMA) {
+
+        Serial.print("Conectando a ");
+        Serial.println(redGuardada.c_str());
+        delay(1000);
+    }
+
+    if (estaConectado()) {
+        Serial.print("Conectado a ");
+        Serial.println(redGuardada.c_str());
+    } else {
+        Serial.println("No se pudo conectar.");
     }
 }
 
