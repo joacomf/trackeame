@@ -23,7 +23,7 @@ void GestorDeConexiones::intentarConectarARedesDisponibles(vector<string> redesD
     int i = 0;
     int cantidadDeRedesDisponibles = redesDisponibles.size();
 
-    while (i < credenciales.size() && !estaConectado()) {
+    while (i++ < credenciales.size() && !estaConectado()) {
         Credencial* credencial = credenciales[i];
         string redGuardada = credencial->ssid();
         string password = credencial->password();
@@ -33,17 +33,15 @@ void GestorDeConexiones::intentarConectarARedesDisponibles(vector<string> redesD
         Serial.println(password.c_str());
         int j = 0;
 
-        while (j < cantidadDeRedesDisponibles && !estaConectado()) {
+        while (j++ < cantidadDeRedesDisponibles && !estaConectado()) {
             string redSeleccionada = redesDisponibles[j];
 
             if (redGuardada == redSeleccionada) {
                 conectarConRed(redGuardada, password);
             }
 
-            j++;
         }
 
-        i++;
     }
 }
 
