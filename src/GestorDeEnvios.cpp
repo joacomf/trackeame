@@ -4,21 +4,12 @@
 #include <WiFi.h>
 #include <ArduinoJson.h>
 
-GestorDeEnvios::GestorDeEnvios(){
-    this->conectar();
-}
+GestorDeEnvios::GestorDeEnvios() {}
 
-bool GestorDeEnvios::enviar(String contenidoArchivo){
-    bool pudoEnviar = false;
-
-    if(!this->estaConectado()){
-        this->conectar();
-    }
-
-    if(this->estaConectado()){
-        DynamicJsonDocument doc(25000);
-
-        this->cliente.begin("http://192.168.0.186:5000/api/locations");
+void GestorDeEnvios::enviar(String contenidoArchivo){
+    DynamicJsonDocument doc(12000);
+    if(WiFi.status() == WL_CONNECTED){
+        this->cliente.begin("http://192.168.43.173:5000/api/locations");
         this->cliente.addHeader("Content-Type", "application/json");
         String cuerpo = "\"" + contenidoArchivo  + "\"";
         doc["posiciones"] = contenidoArchivo;
