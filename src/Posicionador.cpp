@@ -102,7 +102,7 @@ void Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion,
     if (distancia > 3) {
         buffer.push_back(localizacion);
         Serial.print("Localizacion guardada: ");
-        Serial.println(localizacion);
+        Serial.println(localizacion.c_str());
         this->cantidadDeMuestrasSinCambiar = 0;
     } else {
         this->cantidadDeMuestrasSinCambiar++;
@@ -111,7 +111,7 @@ void Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion,
             string parada = "$PARADA" + localizacion.substr(6);
             buffer.push_back(parada);
             Serial.print("Localizacion guardada: ");
-            Serial.println(parada);
+            Serial.println(parada.c_str());
             this->cantidadDeMuestrasSinCambiar = 0;
         }
     }   
