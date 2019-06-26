@@ -101,6 +101,8 @@ double Posicionador::transformarPosicionAGrados(double posicion){
 void Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> buffer, int distancia) {
     if (distancia > 3) {
         buffer.push_back(localizacion);
+        Serial.print("Localizacion guardada: ");
+        Serial.println(localizacion);
         this->cantidadDeMuestrasSinCambiar = 0;
     } else {
         this->cantidadDeMuestrasSinCambiar++;
@@ -108,6 +110,8 @@ void Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion,
         if (this->cantidadDeMuestrasSinCambiar == CANTIDAD_DE_MUESTRAS_DE_PARADA) {
             string parada = "$PARADA" + localizacion.substr(6);
             buffer.push_back(parada);
+            Serial.print("Localizacion guardada: ");
+            Serial.println(parada);
             this->cantidadDeMuestrasSinCambiar = 0;
         }
     }   
