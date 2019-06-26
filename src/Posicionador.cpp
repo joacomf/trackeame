@@ -36,18 +36,7 @@ vector<string> Posicionador::obtenerPaqueteDePosiciones(){
 
         double distancia = this->distanciaEnMetrosEntre(latitudEnGrados, longitudEnGrados, latitudSiguienteEnGrados, longitudSiguienteEnGrados);
         Serial.println(distancia);
-        if (distancia > 3) {
-            buffer.push_back(localizacionSiguiente);
-            this->cantidadDeMuestrasSinCambiar = 0;
-        } else {
-            this->cantidadDeMuestrasSinCambiar++;
-
-            if (this->cantidadDeMuestrasSinCambiar == CANTIDAD_DE_MUESTRAS_DE_PARADA) {
-                string parada = "$PARADA" + localizacionSiguiente.substr(6);
-                buffer.push_back(parada);
-                this->cantidadDeMuestrasSinCambiar = 0;
-            }
-        }
+        this->cargarLocalizacionEnBufferSegunDistancia(localizacionSiguiente, buffer, distancia);
 
         latitudEnGrados = latitudSiguienteEnGrados;
         longitudEnGrados = longitudSiguienteEnGrados;
@@ -106,4 +95,20 @@ double Posicionador::transformarPosicionAGrados(double posicion){
     double resto = (longitudDecimal - grados) * 100.0 / 60;
 
     return (grados + resto);
+}
+
+
+void Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> buffer, int distancia) {
+    if (distancia > 3) {
+        buffer.push_back(localizacion);
+        this->cantidadDeMuestrasSinCambiar = 0;
+    } else {
+        this->cantidadDeMuestrasSinCambiar++;
+
+        if (this->cantidadDeMuestrasSinCambiar == CANTIDAD_DE_MUESTRAS_DE_PARADA) {
+            string parada = "$PARADA" + localizacion.substr(6);
+            buffer.push_back(parada);
+            this->cantidadDeMuestrasSinCambiar = 0;
+        }
+    }   
 }

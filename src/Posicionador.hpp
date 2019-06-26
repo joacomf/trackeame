@@ -18,6 +18,7 @@ class Posicionador{
         double transformarPosicionAGrados(double posicion);
         string obtenerDatoEnPosicion(string localizacion, int posicion);
         string obtenerProximaPosicionValida();
+        void cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> buffer, int distancia);
 };
 
 #endif
