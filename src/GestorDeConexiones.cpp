@@ -5,6 +5,8 @@
 
 GestorDeConexiones::GestorDeConexiones(vector<Credencial*> credenciales) {
     this->credenciales = credenciales;
+    WiFi.disconnect();
+    WiFi.mode(WIFI_STA);
 }
 
 void GestorDeConexiones::buscarRedesYConectar() {
