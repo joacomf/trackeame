@@ -2,11 +2,13 @@
 
 #define RXD2 16
 #define TXD2 17
+#define CANTIDAD_DE_MUESTRAS_DE_PARADA 60
 
 #define d2r (M_PI / 180.0)
 
 Posicionador::Posicionador(){
     Serial2.begin(9600, SERIAL_8N1, RXD2, TXD2);
+    this->cantidadDeMuestrasSinCambiar = 0;
 }
 
 vector<string> Posicionador::obtenerPaqueteDePosiciones(){
@@ -36,6 +38,15 @@ vector<string> Posicionador::obtenerPaqueteDePosiciones(){
         Serial.println(distancia);
         if (distancia > 3) {
             buffer.push_back(localizacionSiguiente);
+            this->cantidadDeMuestrasSinCambiar = 0;
+        } else {
+            this->cantidadDeMuestrasSinCambiar++;
+
+            if (this->cantidadDeMuestrasSinCambiar == CANTIDAD_DE_MUESTRAS_DE_PARADA) {
+                string parada = "$PARADA" + localizacionSiguiente.substr(6);
+                buffer.push_back(parada);
+                this->cantidadDeMuestrasSinCambiar = 0;
+            }
         }
 
         latitudEnGrados = latitudSiguienteEnGrados;
