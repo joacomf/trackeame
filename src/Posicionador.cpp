@@ -33,13 +33,14 @@ vector<string> Posicionador::obtenerPaqueteDePosiciones(){
         string longitudSiguiente = this->obtenerDatoEnPosicion(localizacionSiguiente, 5);
         double latitudSiguienteEnGrados = this->transformarPosicionAGrados(atof(latitudSiguiente.c_str()));
         double longitudSiguienteEnGrados = this->transformarPosicionAGrados(atof(longitudSiguiente.c_str()));
-
         double distancia = this->distanciaEnMetrosEntre(latitudEnGrados, longitudEnGrados, latitudSiguienteEnGrados, longitudSiguienteEnGrados);
         Serial.println(distancia);
-        this->cargarLocalizacionEnBufferSegunDistancia(localizacionSiguiente, buffer, distancia);
+        bool guardoEnBuffer = this->cargarLocalizacionEnBufferSegunDistancia(localizacionSiguiente, buffer, distancia);
 
-        latitudEnGrados = latitudSiguienteEnGrados;
-        longitudEnGrados = longitudSiguienteEnGrados;
+        if(guardoEnBuffer){
+            latitudEnGrados = latitudSiguienteEnGrados;
+            longitudEnGrados = longitudSiguienteEnGrados;
+        }
 
     }
 
@@ -84,7 +85,6 @@ double Posicionador::distanciaEnMetrosEntre(double latitud_1, double longitud_1,
     double a = pow(sin(diferenciaLatitud/2.0), 2) + cos(latitud_1*d2r) * cos(latitud_2*d2r) * pow(sin(diferenciaLongitud/2.0), 2);
     double c = 2 * atan2(sqrt(a), sqrt(1-a));
     double distanciaEnMetros = 6371000 * c;
-
     return distanciaEnMetros;
 }
 
@@ -97,20 +97,24 @@ double Posicionador::transformarPosicionAGrados(double posicion){
     return (grados + resto);
 }
 
-void Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> buffer, int distancia) {
-    
-    if (distancia > 3) {
+bool Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> buffer, int distancia) {
+    bool guardoEnBuffer = false;
+    if (distancia > 10) {
         string localizacionAGuardar = localizacion;
         if (this->cantidadDeMuestrasSinCambiar >= CANTIDAD_DE_MUESTRAS_DE_PARADA) {
             localizacionAGuardar = "$PARADA" + localizacion.substr(6);
+
         }
 
         buffer.push_back(localizacionAGuardar);
+        guardoEnBuffer = true;
         this->cantidadDeMuestrasSinCambiar = 0;
         Serial.print("Localizacion guardada: ");
         Serial.println(localizacionAGuardar.c_str());
         
     } else {
         this->cantidadDeMuestrasSinCambiar++;
-    }   
+    }
+
+    return guardoEnBuffer;   
 }
