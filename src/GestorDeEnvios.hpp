@@ -2,8 +2,6 @@
 #define GESTORDEENVIOS_H
 #include <HTTPClient.h>
 
-#define CANTIDAD_DE_INTENTOS_MAXIMA 10
-
 class GestorDeEnvios{
     public:
         GestorDeEnvios();
