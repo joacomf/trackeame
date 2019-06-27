@@ -16,7 +16,7 @@ bool GestorDeEnvios::enviar(String contenidoArchivo){
     }
 
     if(this->estaConectado()){
-        DynamicJsonDocument doc(25000);
+        DynamicJsonDocument doc(12000);
 
         this->cliente.begin("http://192.168.0.186:5000/api/locations");
         this->cliente.addHeader("Content-Type", "application/json");
