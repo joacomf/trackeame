@@ -27,7 +27,6 @@ vector<string> Posicionador::obtenerPaqueteDePosiciones(){
     buffer.push_back(localizacion);
 
     while (Serial2.available() && buffer.size() < 10){
-
         string localizacionSiguiente = this -> obtenerProximaPosicionValida();
         string latitudSiguiente = this->obtenerDatoEnPosicion(localizacionSiguiente, 3);
         string longitudSiguiente = this->obtenerDatoEnPosicion(localizacionSiguiente, 5);
@@ -97,7 +96,7 @@ double Posicionador::transformarPosicionAGrados(double posicion){
     return (grados + resto);
 }
 
-bool Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> buffer, int distancia) {
+bool Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> &buffer, int distancia) {
     bool guardoEnBuffer = false;
     if (distancia > 10) {
         string localizacionAGuardar = localizacion;
