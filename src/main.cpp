@@ -16,8 +16,5 @@ void setup(){
 
 void loop(){
     vector <string> posiciones = posicionador->obtenerPaqueteDePosiciones();
-    manejador->escribir(posiciones);
-
-    String contenido = manejador->obtenerContenido("/data.csv");
-    gestor->enviar(contenido);
+    delay(1000);
 }

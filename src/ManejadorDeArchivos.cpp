@@ -9,12 +9,12 @@
 ManejadorDeArchivos::ManejadorDeArchivos(){
     bool tarjetaInicializada = SD.begin(SD_CS);  
     if(!tarjetaInicializada) {
-        Serial.println("Card Mount Failed");
+        Serial.println("Falló el montado de la tarjeta SD");
         return;
     }
     uint8_t cardType = SD.cardType();
     if(cardType == CARD_NONE) {
-        Serial.println("No SD card attached");
+        Serial.println("No hay tarjeta SD");
         return;
     }
     //Crea el archivo de almacenamiento de posiciones (si no existe)
@@ -23,7 +23,6 @@ ManejadorDeArchivos::ManejadorDeArchivos(){
         file.close();
     }
     SD.mkdir("/listo");
-    
 }
 
 void ManejadorDeArchivos::escribir(vector<string> posiciones){
@@ -43,6 +42,7 @@ void ManejadorDeArchivos::escribir(vector<string> posiciones){
             file.close();
             this->disponibilizarParaTransferencia(String(millis()));
             file = SD.open("/data.csv", FILE_APPEND);
+
         }
     }
 
@@ -50,13 +50,16 @@ void ManejadorDeArchivos::escribir(vector<string> posiciones){
     file.close();
 }
 
-void ManejadorDeArchivos::listarArchivos(){
-    File root = SD.open("/");
-    while(File entry = root.openNextFile()){
-        Serial.println(entry.name());
+string ManejadorDeArchivos::obtenerProximoArchivoParaEnviar(){
+    File root = SD.open("/listo");
+
+    string proximoArchivoAEnviar = "";
+    if(File entry = root.openNextFile()){
+        proximoArchivoAEnviar = entry.name();
         entry.close();
     }
-    root.close();
+
+    return proximoArchivoAEnviar;
 }
 
 void ManejadorDeArchivos::disponibilizarParaTransferencia(String nombreDestino){
@@ -80,6 +83,10 @@ String ManejadorDeArchivos::obtenerContenido(String nombreArchivo){
         contenido += archivoOrigen.readStringUntil('\n') + '\n';
     }
     return contenido;
+}
+
+void ManejadorDeArchivos::eliminar(string nombreArchivo){
+    SD.remove(nombreArchivo.c_str());
 }
 
 void ManejadorDeArchivos::reiniciarArchivoDeDatos(){
