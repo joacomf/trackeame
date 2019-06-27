@@ -6,8 +6,9 @@
 
 GestorDeEnvios::GestorDeEnvios() {}
 
-void GestorDeEnvios::enviar(String contenidoArchivo){
+bool GestorDeEnvios::enviar(String contenidoArchivo){
     DynamicJsonDocument doc(12000);
+    bool pudoEnviar = false;
     if(WiFi.status() == WL_CONNECTED){
         this->cliente.begin("http://192.168.43.173:5000/api/locations");
         this->cliente.addHeader("Content-Type", "application/json");
