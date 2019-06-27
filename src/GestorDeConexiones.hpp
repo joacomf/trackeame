@@ -10,6 +10,7 @@ class GestorDeConexiones {
         GestorDeConexiones(vector<Credencial*> credenciales);
         void buscarRedesYConectar();
         bool estaConectado();
+        void desconectar();
     private:
         const int CANTIDAD_DE_INTENTOS_MAXIMA = 10;
         vector<Credencial*> credenciales;
