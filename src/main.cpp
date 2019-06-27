@@ -17,13 +17,13 @@ void setup(){
     //manejador = new ManejadorDeArchivos();
     //gestorDeEnvios = new GestorDeEnvios();
     gestorDeCredenciales = new GestorDeCredenciales();
-    gestorDeConexiones = new GestorDeConexiones();
     credenciales = gestorDeCredenciales->obtenerCredenciales();
+    gestorDeConexiones = new GestorDeConexiones(credenciales);
     //posicionador = new Posicionador();
 }
 
 void loop(){
-    //gestorDeConexiones->conectar(credenciales);
+    gestorDeConexiones->buscarRedesYConectar();
     /*vector <string> posiciones = posicionador->obtenerPaqueteDePosiciones();
     manejador->escribir(posiciones);
 
