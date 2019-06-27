@@ -97,22 +97,20 @@ double Posicionador::transformarPosicionAGrados(double posicion){
     return (grados + resto);
 }
 
-
 void Posicionador::cargarLocalizacionEnBufferSegunDistancia(string localizacion, vector<string> buffer, int distancia) {
+    
     if (distancia > 3) {
-        buffer.push_back(localizacion);
-        Serial.print("Localizacion guardada: ");
-        Serial.println(localizacion.c_str());
+        string localizacionAGuardar = localizacion;
+        if (this->cantidadDeMuestrasSinCambiar >= CANTIDAD_DE_MUESTRAS_DE_PARADA) {
+            localizacionAGuardar = "$PARADA" + localizacion.substr(6);
+        }
+
+        buffer.push_back(localizacionAGuardar);
         this->cantidadDeMuestrasSinCambiar = 0;
+        Serial.print("Localizacion guardada: ");
+        Serial.println(localizacionAGuardar.c_str());
+        
     } else {
         this->cantidadDeMuestrasSinCambiar++;
-
-        if (this->cantidadDeMuestrasSinCambiar == CANTIDAD_DE_MUESTRAS_DE_PARADA) {
-            string parada = "$PARADA" + localizacion.substr(6);
-            buffer.push_back(parada);
-            Serial.print("Localizacion guardada: ");
-            Serial.println(parada.c_str());
-            this->cantidadDeMuestrasSinCambiar = 0;
-        }
     }   
 }
