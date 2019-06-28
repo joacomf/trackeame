@@ -14,6 +14,7 @@ vector<Credencial*> GestorDeCredenciales::obtenerCredenciales() {
     
     vector<Credencial*> credenciales;
     string datosRecibidos = bluetoothSerial.readStringUntil('\r').c_str();
+    bluetoothSerial.end();
     vector<string> credencialesCsv = separarCsvDeCredenciales(datosRecibidos);
 
     for (int i = 0; i < credencialesCsv.size(); i++) {
