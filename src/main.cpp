@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include "ManejadorDeArchivos.hpp"
 #include "GestorDeEnvios.hpp"
+
 #include "GestorDeCredenciales.hpp"
 #include "GestorDeConexiones.hpp"
 #include "Posicionador.hpp"
@@ -34,6 +35,9 @@ void loop(){
         if(estaConectado){
             String contenido = manejador->obtenerContenido(proximoArchivoParaEnviar.c_str());
             pudoEnviar = gestorDeEnvios->enviar(contenido);
+            if(pudoEnviar) {
+                manejador ->eliminar(proximoArchivoParaEnviar);
+            }
         }
 
         proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
