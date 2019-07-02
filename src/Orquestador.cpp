@@ -24,7 +24,6 @@ void setup(){
 }
 
 void loop(){
-
     string proximoArchivoParaEnviar = manejador->obtenerProximoArchivoParaEnviar();
     bool estaConectado = true;
     bool pudoEnviar = true;
