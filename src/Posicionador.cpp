@@ -2,7 +2,7 @@
 
 #define RXD2 16
 #define TXD2 17
-#define CANTIDAD_DE_MUESTRAS_DE_PARADA 60
+#define CANTIDAD_DE_MUESTRAS_DE_PARADA 10
 
 #define d2r (M_PI / 180.0)
 
@@ -58,7 +58,6 @@ string Posicionador::obtenerDatoEnPosicion(string localizacion, int posicion){
 string Posicionador::obtenerProximaPosicionValida(){
     bool posicionValida = false;
     string localizacion;
-    Serial.println("Esperando posicion valida");
     while(!posicionValida) {
 
         localizacion = Serial2.readStringUntil('\n').c_str();
